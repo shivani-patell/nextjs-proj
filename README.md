@@ -6,7 +6,7 @@ Anonymous, three-step survey for reporting unusual drug effects: **Disclaimer �
 
 - **`app/page.tsx`** – Survey UI (progress, all questions, resources, OPC opt-in).
 - **`app/api/submit/route.ts`** – Receives submissions as `multipart/form-data`. On Vercel, payloads appear under **Project → Logs** (for demos; replace with a database or email service for production use).
-- **`public/j-healthcare-logo.svg`** – Header logo.
+- **`public/j-healthcare-logo.png`** – Header logo.
 
 ## Run it on your computer
 
