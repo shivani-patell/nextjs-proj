@@ -1,10 +1,8 @@
 "use client";
 
-import Image from "next/image";
+import SurveyHeader from "@/components/SurveyHeader";
+import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-
-const PRIVACY_POLICY_URL =
-  "https://survey-tool-j-healthcare.vercel.app/privacy-policy";
 
 type Step = 1 | 2 | 3;
 
@@ -25,6 +23,7 @@ type FormState = {
   frequency: "" | "first" | "recent" | "common";
   notes: string;
   sendOpcInfo: boolean;
+  collaborationContact: string;
 };
 
 const initialForm: FormState = {
@@ -44,6 +43,7 @@ const initialForm: FormState = {
   frequency: "",
   notes: "",
   sendOpcInfo: false,
+  collaborationContact: "",
 };
 
 const ROUTE_OPTIONS = [
@@ -76,7 +76,9 @@ const labelClass = "mb-2 block text-sm font-semibold text-black";
 function validateStep2(f: FormState): string | null {
   if (!f.incidentDate.trim()) return "Please enter the date of the incident.";
   if (!f.incidentTime.trim()) return "Please enter the time of the incident.";
-  if (!f.area.trim()) return "Please enter the rough area or neighbourhood.";
+  if (!f.area.trim()) {
+    return "Please enter the area or neighbourhood where you experienced the unusual effects.";
+  }
   if (!f.intended.trim()) return "Please describe what you intended to take.";
   if (!f.gotExpected) return "Please answer whether you got what you expected.";
   if (!f.route) return "Please select how it was taken.";
@@ -171,6 +173,7 @@ export default function FrontlineFeedbackSurvey() {
       fd.append("useFrequency", form.frequency);
       fd.append("additionalNotes", form.notes);
       fd.append("opcOptIn", String(form.sendOpcInfo));
+      fd.append("collaborationContact", form.collaborationContact);
       if (form.photoFile) {
         fd.append("photo", form.photoFile);
       }
@@ -193,29 +196,7 @@ export default function FrontlineFeedbackSurvey() {
 
   return (
     <div className="flex min-h-[100dvh] min-h-screen flex-col bg-blue-950">
-      <header className="shrink-0 border-b border-blue-800 bg-blue-950 px-4 py-5 sm:px-8">
-        <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:text-left">
-          <Image
-            src="/j-healthcare-logo.png"
-            alt="The J Initiative — logo with J, plus sign, and heart on dark blue"
-            width={492}
-            height={314}
-            className="h-12 w-auto max-w-[min(100%,220px)] shrink-0 sm:h-14"
-            priority
-          />
-          <div className="min-w-0 text-white">
-            <p className="text-xs font-medium uppercase tracking-wide text-blue-200">
-              JHealthcare Initiative
-            </p>
-            <h1 className="text-balance text-xl font-bold leading-tight sm:text-2xl">
-              Frontline Feedback
-            </h1>
-            <p className="mt-1 text-balance text-sm text-blue-100 sm:text-base">
-              Report Unusual Drug Effects – Help Canadians Stay Informed
-            </p>
-          </div>
-        </div>
-      </header>
+      <SurveyHeader />
 
       {!success && (
         <div
@@ -339,7 +320,8 @@ export default function FrontlineFeedbackSurvey() {
 
               <div>
                 <label className={labelClass} htmlFor="area">
-                  2. What was the rough area/neighbourhood of the incident?
+                  2. What was the area/neighbourhood where you experienced the
+                  unusual effects?
                 </label>
                 <input
                   id="area"
@@ -655,17 +637,6 @@ export default function FrontlineFeedbackSurvey() {
                   </a>
                 </p>
               </li>
-              <li className="rounded-xl border border-neutral-300 bg-neutral-50 p-5 text-black shadow-sm">
-                <h3 className="font-bold">Alcohol Drug Helpline</h3>
-                <p className="mt-1">
-                  <a
-                    href="tel:1-800-787-7797"
-                    className="font-semibold text-blue-900 underline focus:outline-none focus:ring-2 focus:ring-blue-800"
-                  >
-                    1-800-787-7797
-                  </a>
-                </p>
-              </li>
             </ul>
 
             <div className="rounded-xl border border-neutral-300 bg-white p-5">
@@ -681,14 +652,32 @@ export default function FrontlineFeedbackSurvey() {
                 <span className="text-black">
                   <span className="font-semibold">Send OPC info?</span>{" "}
                   <span className="text-neutral-800">
-                    (optional) The Overdose Prevention Circle is a free
-                    community program where people with drug use experience can
-                    safely access harm reduction supplies (needles, pipes,
-                    naloxone), get peer support, and connect to treatment
-                    options when ready. No judgment, no barriers.
+                    (optional) The overdose protection circle is a free virtual
+                    harm reduction circle for people who use drugs. It is a
+                    community-based space where people can connect with support,
+                    share experiences, and access resources that may be helpful
+                    to them. OPC also supports safe monitoring and overdose
+                    prevention.
                   </span>
                 </span>
               </label>
+            </div>
+
+            <div className="mt-6 rounded-xl border border-neutral-300 bg-neutral-50 p-5 text-black shadow-sm">
+              <label className={labelClass} htmlFor="collaboration-contact">
+                Would you be interested in collaborating with us?
+              </label>
+              <textarea
+                id="collaboration-contact"
+                value={form.collaborationContact}
+                onChange={(e) =>
+                  setField("collaborationContact", e.target.value)
+                }
+                placeholder="If yes, please share your name, organization, or preferred contact information."
+                rows={4}
+                className={inputClass}
+                autoComplete="off"
+              />
             </div>
 
             {submitError && (
@@ -751,13 +740,6 @@ function DisclaimerContent({
               1-888-688-NORS (6677)
             </a>
           </li>
-          <li>
-            Call the Alcohol Drug Helpline on{" "}
-            <a className="text-blue-900 underline" href="tel:1-800-787-7797">
-              1-800-787-7797
-            </a>{" "}
-            or text 8681, available 24/7.
-          </li>
         </ul>
 
         <p className="mt-8 text-lg font-semibold">Privacy:</p>
@@ -778,14 +760,12 @@ function DisclaimerContent({
         <p className="mt-4 text-neutral-900">
           You can find out more about how we use this information by checking
           our{" "}
-          <a
-            href={PRIVACY_POLICY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/privacy-policy"
             className="font-semibold text-blue-900 underline"
           >
             Privacy Policy
-          </a>
+          </Link>
           .
         </p>
 

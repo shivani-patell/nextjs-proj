@@ -1,10 +1,11 @@
-# JHealthcare Initiative – Frontline Feedback
+# J Healthcare Initiative – Frontline Feedback
 
 Anonymous, three-step survey for reporting unusual drug effects: **Disclaimer → Questions → Resources**, then submit. Built with [Next.js](https://nextjs.org) and Tailwind CSS.
 
 ## What’s in this repo
 
 - **`app/page.tsx`** – Survey UI (progress, all questions, resources, OPC opt-in).
+- **`app/privacy-policy/page.tsx`** – Privacy policy (same header/theme as the survey).
 - **`app/api/submit/route.ts`** – Receives submissions as `multipart/form-data`. On Vercel, payloads appear under **Project → Logs** (for demos; replace with a database or email service for production use).
 - **`public/j-healthcare-logo.png`** – Header logo.
 

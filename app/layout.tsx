@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JHealthcare Initiative – Frontline Feedback",
+  title: "J Healthcare Initiative – Frontline Feedback",
   description:
     "Report unusual drug effects confidentially. Help track supply risks and keep communities informed.",
 };
