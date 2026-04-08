@@ -24,6 +24,8 @@ type FormState = {
   notes: string;
   sendOpcInfo: boolean;
   collaborationContact: string;
+  receiveResults: boolean;
+  resultsContact: string;
 };
 
 const initialForm: FormState = {
@@ -44,6 +46,8 @@ const initialForm: FormState = {
   notes: "",
   sendOpcInfo: false,
   collaborationContact: "",
+  receiveResults: false,
+  resultsContact: "",
 };
 
 const ROUTE_OPTIONS = [
@@ -74,7 +78,7 @@ const inputClass =
 const labelClass = "mb-2 block text-sm font-semibold text-black";
 
 function validateStep2(f: FormState): string | null {
-  if (!f.incidentDate.trim()) return "Please enter the date of the incident.";
+  if (!f.incidentDate.trim()) return "Please enter the date of your entry.";
   if (!f.incidentTime.trim()) return "Please enter the time of the incident.";
   if (!f.area.trim()) {
     return "Please enter the area or neighbourhood where you experienced the unusual effects.";
@@ -102,6 +106,9 @@ function validateStep2(f: FormState): string | null {
     return "Please describe the other effect(s).";
   }
   if (!f.frequency) return "Please answer how often you use.";
+  if (f.receiveResults && !f.resultsContact.trim()) {
+    return "Please share contact information so we can send community results.";
+  }
   return null;
 }
 
@@ -174,6 +181,8 @@ export default function FrontlineFeedbackSurvey() {
       fd.append("additionalNotes", form.notes);
       fd.append("opcOptIn", String(form.sendOpcInfo));
       fd.append("collaborationContact", form.collaborationContact);
+      fd.append("receiveResults", String(form.receiveResults));
+      fd.append("resultsContact", form.resultsContact);
       if (form.photoFile) {
         fd.append("photo", form.photoFile);
       }
@@ -270,6 +279,12 @@ export default function FrontlineFeedbackSurvey() {
             <h2 className="mb-6 text-xl font-bold text-black">
               Incident details
             </h2>
+            <p className="mb-6 text-neutral-800">
+              This community-based survey helps identify local gaps in the
+              Vancouver and broader Canadian harm reduction landscape. It
+              complements existing platforms and supports dissemination of
+              results back to community members who request updates.
+            </p>
             {step2Error && (
               <div
                 role="alert"
@@ -282,7 +297,7 @@ export default function FrontlineFeedbackSurvey() {
             <div className="space-y-8">
               <fieldset className="space-y-3">
                 <legend className={`${labelClass} text-base`}>
-                  1. When did the incident take place?
+                  1. Date of your entry
                 </legend>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div>
@@ -317,6 +332,44 @@ export default function FrontlineFeedbackSurvey() {
                   </div>
                 </div>
               </fieldset>
+
+              <div className="rounded-xl border border-neutral-300 bg-neutral-50 p-5 text-black shadow-sm">
+                <label className="flex cursor-pointer items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={form.receiveResults}
+                    onChange={(e) =>
+                      setField("receiveResults", e.target.checked)
+                    }
+                    className="mt-1 h-4 w-4 accent-blue-900"
+                  />
+                  <span className="text-neutral-900">
+                    <span className="font-semibold">
+                      Do you want to receive results?
+                    </span>{" "}
+                    We can share findings from this community-based survey and
+                    disseminate them back to community members and partners.
+                  </span>
+                </label>
+                {form.receiveResults && (
+                  <div className="mt-4">
+                    <label className={labelClass} htmlFor="results-contact">
+                      Preferred contact method
+                    </label>
+                    <input
+                      id="results-contact"
+                      type="text"
+                      value={form.resultsContact}
+                      onChange={(e) =>
+                        setField("resultsContact", e.target.value)
+                      }
+                      placeholder="Email, phone, or another way to reach you"
+                      className={inputClass}
+                      autoComplete="off"
+                    />
+                  </div>
+                )}
+              </div>
 
               <div>
                 <label className={labelClass} htmlFor="area">
@@ -615,7 +668,7 @@ export default function FrontlineFeedbackSurvey() {
             <ul className="mb-10 grid gap-4 sm:grid-cols-1">
               <li className="rounded-xl border border-neutral-300 bg-neutral-50 p-5 text-black shadow-sm">
                 <h3 className="font-bold">
-                  National Overdose Response Service (NORS)
+                  National Overdose Response Service (NORS, Canada only)
                 </h3>
                 <p className="mt-1">
                   <a
@@ -627,7 +680,7 @@ export default function FrontlineFeedbackSurvey() {
                 </p>
               </li>
               <li className="rounded-xl border border-neutral-300 bg-neutral-50 p-5 text-black shadow-sm">
-                <h3 className="font-bold">Safespot</h3>
+                <h3 className="font-bold">SafeSpot (USA only)</h3>
                 <p className="mt-1">
                   <a
                     href="tel:800-972-0590"
@@ -662,6 +715,11 @@ export default function FrontlineFeedbackSurvey() {
                 </span>
               </label>
             </div>
+
+            <p className="mt-6 text-neutral-800">
+              We recognize that people may need personalized treatment options
+              and individualized care pathways based on their goals and context.
+            </p>
 
             <div className="mt-6 rounded-xl border border-neutral-300 bg-neutral-50 p-5 text-black shadow-sm">
               <label className={labelClass} htmlFor="collaboration-contact">
@@ -731,11 +789,11 @@ function DisclaimerContent({
             <strong>Emergency:</strong> Call 911 immediately
           </li>
           <li>
-            <strong>Help:</strong> Safespot:{" "}
+            <strong>Help:</strong> SafeSpot (USA only):{" "}
             <a className="text-blue-900 underline" href="tel:800-972-0590">
               800-972-0590
             </a>{" "}
-            and National Overdose Response Service{" "}
+            and National Overdose Response Service (NORS, Canada only){" "}
             <a className="text-blue-900 underline" href="tel:1-888-688-6677">
               1-888-688-NORS (6677)
             </a>
@@ -786,6 +844,10 @@ function DisclaimerContent({
           <li>Track patterns across BC communities</li>
           <li>Shape better harm reduction programs</li>
           <li>Guide advocacy for safer treatment options</li>
+          <li>
+            Close a service gap in the Canadian/Vancouver harm reduction
+            landscape without competing with existing platforms
+          </li>
         </ul>
       </div>
 
