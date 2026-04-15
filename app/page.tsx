@@ -79,17 +79,17 @@ const labelClass = "mb-2 block text-sm font-semibold text-black";
 
 function validateStep2(f: FormState): string | null {
   if (!f.incidentDate.trim()) return "Please enter the date of your entry.";
-  if (!f.incidentTime.trim()) return "Please enter the time of the incident.";
+  if (!f.incidentTime.trim()) return "Please enter the time.";
   if (!f.area.trim()) {
     return "Please enter the area or neighbourhood where you experienced the unusual effects.";
   }
-  if (!f.intended.trim()) return "Please describe what you intended to take.";
+  if (!f.intended.trim()) return "Please tell us what you planned to take.";
   if (!f.gotExpected) return "Please answer whether you got what you expected.";
   if (!f.route) return "Please select how it was taken.";
   if (f.route === "other" && !f.routeOther.trim()) {
     return "Please describe how it was taken (Other).";
   }
-  if (!f.source) return "Please indicate whether the source was usual or new.";
+  if (!f.source) return "Please tell us if the source was usual or new.";
   if (f.source === "new" && !f.newSourceDetail.trim()) {
     return "Please briefly describe the new source.";
   }
@@ -276,14 +276,13 @@ export default function FrontlineFeedbackSurvey() {
             className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-8"
             onSubmit={(e) => e.preventDefault()}
           >
-            <h2 className="mb-6 text-xl font-bold text-black">
-              Incident details
+            <h2 className="mb-4 text-xl font-bold text-black">
+              Survey questions
             </h2>
             <p className="mb-6 text-neutral-800">
-              This community-based survey helps identify local gaps in the
-              Vancouver and broader Canadian harm reduction landscape. It
-              complements existing platforms and supports dissemination of
-              results back to community members who request updates.
+              This community survey helps us understand what is working, what
+              is missing, and how we can improve services. This project adds to
+              existing tools. It is not here to replace them.
             </p>
             {step2Error && (
               <div
@@ -389,14 +388,14 @@ export default function FrontlineFeedbackSurvey() {
 
               <div>
                 <label className={labelClass} htmlFor="intended">
-                  3. What did you intend to take?
+                  3. What did you plan to take?
                 </label>
                 <input
                   id="intended"
                   type="text"
                   value={form.intended}
                   onChange={(e) => setField("intended", e.target.value)}
-                  placeholder="e.g., fentanyl, heroin, coke, medetomidine"
+                      placeholder="For example: fentanyl, heroin, cocaine"
                   className={inputClass}
                   autoComplete="off"
                 />
@@ -495,7 +494,7 @@ export default function FrontlineFeedbackSurvey() {
                 {form.source === "new" && (
                   <div className="mt-3">
                     <label className={labelClass} htmlFor="new-source-detail">
-                      Tell us about the new source
+                      Tell us about the new source (optional)
                     </label>
                     <textarea
                       id="new-source-detail"
@@ -534,7 +533,7 @@ export default function FrontlineFeedbackSurvey() {
                 </div>
                 <div className="mt-4">
                   <label className={labelClass} htmlFor="photo">
-                    Photo (optional — helps identify supply)
+                    Photo (optional)
                   </label>
                   <input
                     id="photo"
@@ -548,6 +547,11 @@ export default function FrontlineFeedbackSurvey() {
                     }
                     className="block w-full text-sm text-black file:mr-4 file:rounded-lg file:border-0 file:bg-blue-900 file:px-4 file:py-2 file:font-semibold file:text-white"
                   />
+                  <p className="mt-2 text-sm text-neutral-700">
+                    Please do not upload photos that show faces, names,
+                    addresses, phone numbers, ID cards, license plates, or
+                    anything else that could identify you or someone else.
+                  </p>
                 </div>
               </fieldset>
 
@@ -591,13 +595,15 @@ export default function FrontlineFeedbackSurvey() {
               </fieldset>
 
               <fieldset>
-                <legend className={labelClass}>9. How often do you use?</legend>
+                <legend className={labelClass}>
+                  9. How often are you using right now?
+                </legend>
                 <div className="flex flex-col gap-2">
                   {(
                     [
                       { value: "first", label: "First time" },
-                      { value: "recent", label: "Recent pattern" },
-                      { value: "common", label: "Common now" },
+                      { value: "recent", label: "Started recently" },
+                      { value: "common", label: "Often right now" },
                     ] as const
                   ).map(({ value, label }) => (
                     <label
@@ -620,13 +626,13 @@ export default function FrontlineFeedbackSurvey() {
 
               <div>
                 <label className={labelClass} htmlFor="notes">
-                  10. Anything else you would like us to know?
+                  10. How can we improve?
                 </label>
                 <textarea
                   id="notes"
                   value={form.notes}
                   onChange={(e) => setField("notes", e.target.value)}
-                  placeholder="Supply details, experience notes"
+                  placeholder="Tell us about barriers, service gaps, or ideas"
                   rows={4}
                   className={inputClass}
                 />
@@ -781,43 +787,42 @@ function DisclaimerContent({
   return (
     <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-8">
       <div className="max-w-none text-black">
-        <p className="text-lg font-semibold">
-          ⚠️ Important Notice:
+        <p className="text-lg font-semibold">Before you start</p>
+        <p className="mt-2 text-neutral-900">
+          This survey is for people in Canada who use drugs, and for community
+          partners supporting harm reduction. It is part of the J Healthcare
+          Frontline Feedback project.
         </p>
+        <p className="mt-3 text-neutral-900">
+          We use this survey to find service gaps, understand barriers, and
+          improve supports. This tool does not compete with other platforms. It
+          helps fill a gap in the Vancouver and Canadian harm reduction
+          landscape.
+        </p>
+
+        <p className="mt-8 text-lg font-semibold">What we collect</p>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-neutral-900">
-          <li>
-            <strong>Emergency:</strong> Call 911 immediately
-          </li>
-          <li>
-            <strong>Help:</strong> SafeSpot (USA only):{" "}
-            <a className="text-blue-900 underline" href="tel:800-972-0590">
-              800-972-0590
-            </a>{" "}
-            and National Overdose Response Service (NORS, Canada only){" "}
-            <a className="text-blue-900 underline" href="tel:1-888-688-6677">
-              1-888-688-NORS (6677)
-            </a>
-          </li>
+          <li>Date, time, and rough area</li>
+          <li>What you planned to take and what happened</li>
+          <li>How it was used and the effects you noticed</li>
+          <li>Optional photo of substance or packaging</li>
+          <li>Optional contact details for follow-up or survey results</li>
         </ul>
 
-        <p className="mt-8 text-lg font-semibold">Privacy:</p>
-        <ul className="mt-2 list-none space-y-1 pl-0 text-neutral-900">
-          <li>✓ Your report is completely confidential</li>
-          <li>
-            ✓ You don&apos;t need to provide any personal information if you
-            don&apos;t want to
-          </li>
-          <li>
-            ✓ Your information will not be shared with law enforcement
-          </li>
-          <li>
-            ✓ Providing as much detail as possible helps us keep others safe
-          </li>
-          <li>✓ The form takes about 2-3 minutes to complete</li>
+        <p className="mt-8 text-lg font-semibold">Your choice and privacy</p>
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-neutral-900">
+          <li>Taking part is your choice</li>
+          <li>You can skip any question</li>
+          <li>You can stop at any time</li>
+          <li>Please avoid sharing identifying information unless asked</li>
+          <li>We do not share your information with law enforcement</li>
         </ul>
         <p className="mt-4 text-neutral-900">
-          You can find out more about how we use this information by checking
-          our{" "}
+          Your information may be used for research, advocacy, and learning
+          where services are missing.
+        </p>
+        <p className="mt-3 text-neutral-900">
+          Read our full{" "}
           <Link
             href="/privacy-policy"
             className="font-semibold text-blue-900 underline"
@@ -827,26 +832,22 @@ function DisclaimerContent({
           .
         </p>
 
-        <p className="mt-8 text-lg font-semibold">What we collect</p>
+        <p className="mt-8 text-lg font-semibold">Emergency and support</p>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-neutral-900">
-          <li>When &amp; rough area it happened</li>
-          <li>What you planned to take vs got</li>
-          <li>How it was used &amp; what it looked like</li>
-          <li>Your experience (effects, timing)</li>
-          <li>Photo (optional, helps ID supply)</li>
-          <li>Email (optional, only if you want updates)</li>
-        </ul>
-
-        <p className="mt-8 text-lg font-semibold">How your report helps</p>
-        <ul className="mt-2 list-disc space-y-1 pl-5 text-neutral-900">
-          <li>Spot dangerous/contaminated batches</li>
-          <li>Warn others about local supply risks</li>
-          <li>Track patterns across BC communities</li>
-          <li>Shape better harm reduction programs</li>
-          <li>Guide advocacy for safer treatment options</li>
           <li>
-            Close a service gap in the Canadian/Vancouver harm reduction
-            landscape without competing with existing platforms
+            <strong>Emergency:</strong> Call 911 right away
+          </li>
+          <li>
+            <strong>NORS (Canada only):</strong>{" "}
+            <a className="text-blue-900 underline" href="tel:1-888-688-6677">
+              1-888-688-NORS (6677)
+            </a>
+          </li>
+          <li>
+            <strong>SafeSpot (USA only):</strong>{" "}
+            <a className="text-blue-900 underline" href="tel:800-972-0590">
+              800-972-0590
+            </a>
           </li>
         </ul>
       </div>
