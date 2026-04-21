@@ -14,7 +14,7 @@ export default function SurveyHeader() {
         />
         <div className="min-w-0 text-white">
           <p className="text-xs font-medium uppercase tracking-wide text-blue-200">
-            J Healthcare Initiative
+            The J Healthcare Initiative
           </p>
           <h1 className="text-balance text-xl font-bold leading-tight sm:text-2xl">
             Frontline Feedback

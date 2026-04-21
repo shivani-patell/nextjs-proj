@@ -3,9 +3,9 @@ import Link from "next/link";
 import SurveyHeader from "@/components/SurveyHeader";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy – J Healthcare Initiative",
+  title: "Privacy Policy – The J Healthcare Initiative",
   description:
-    "How J Healthcare Initiative collects, uses, stores, and protects information in the Frontline Feedback project.",
+    "How The J Healthcare Initiative collects, uses, stores, and protects information in the Frontline Feedback project.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -22,7 +22,7 @@ export default function PrivacyPolicyPage() {
           </Link>
 
           <h1 className="text-3xl font-bold text-black">Privacy Policy</h1>
-          <p className="mt-2 text-sm text-neutral-700">J Healthcare Initiative</p>
+          <p className="mt-2 text-sm text-neutral-700">The J Healthcare Initiative</p>
           <p className="text-sm text-neutral-700">Last Updated: April 2026</p>
 
           <div className="mt-8 space-y-8 text-base leading-relaxed text-neutral-900">
@@ -406,7 +406,7 @@ export default function PrivacyPolicyPage() {
               </p>
               <p className="space-y-1">
                 <span className="block font-semibold">
-                  J Healthcare Initiative — Privacy Office
+                  The J Healthcare Initiative
                 </span>
                 <span className="block">
                   Email:{" "}

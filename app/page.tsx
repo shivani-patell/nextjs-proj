@@ -668,7 +668,9 @@ export default function FrontlineFeedbackSurvey() {
               Thank you – your report helps track supply risks safely!
             </h2>
             <p className="mb-8 text-neutral-800">
-              Before you finish, here are resources you can use anytime.
+              NORS and SafeSpot are for overdose prevention support and
+              monitoring. They are not emergency services. In an emergency,
+              call 911.
             </p>
 
             <ul className="mb-10 grid gap-4 sm:grid-cols-1">
@@ -833,6 +835,10 @@ function DisclaimerContent({
         </p>
 
         <p className="mt-8 text-lg font-semibold">Emergency and support</p>
+        <p className="mt-2 text-neutral-900">
+          NORS and SafeSpot are for overdose prevention support and monitoring.
+          They are not emergency services. In an emergency, call 911.
+        </p>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-neutral-900">
           <li>
             <strong>Emergency:</strong> Call 911 right away

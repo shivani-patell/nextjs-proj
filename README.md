@@ -1,4 +1,4 @@
-# J Healthcare Initiative – Frontline Feedback
+# The J Healthcare Initiative – Frontline Feedback
 
 Anonymous, three-step survey for reporting unusual drug effects: **Disclaimer → Questions → Resources**, then submit. Built with [Next.js](https://nextjs.org) and Tailwind CSS.
 
